@@ -12,7 +12,21 @@ const index = async () => {
     }
 };
 
+// Fetch a single goal
+const show = async (goalId) => {
+    try {
+        const res = await fetch(`${BASE_URL}/${goalId}`, {
+            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        });
+        return res.json();
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 
 export {
     index,
+    show,
+
 };
