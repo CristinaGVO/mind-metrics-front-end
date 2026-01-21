@@ -56,11 +56,27 @@ const deleteGoal = async (goalId) => {
     }
 };
 
+// Update a goal
+const updateGoal = async (goalId, goalFormData) => {
+    try {
+        const res = await fetch(`${BASE_URL}/${goalId}`, {
+            method: 'PUT',
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(goalFormData),
+        });
+        return res.json();
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 export {
     index,
     show,
     create,
     deleteGoal,
-
+    updateGoal,
 };
