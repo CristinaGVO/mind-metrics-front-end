@@ -31,6 +31,21 @@ const App = () => {
     fetchGoals();
   }, [user]);
 
+//crear
+  const handleAddGoal = async (goalFormData) => {
+    const newGoal = await goalService.create(goalFormData);
+    setGoals([newGoal, ...goals]);
+  };
+  
+  const handleDeleteGoal = async (goalId) => {
+    await goalService.deleteGoal(goalId);
+    setGoals(goals.filter((g) => g._id !== goalId));
+  };
+//edit
+  const handleUpdateGoal = async (goalId, goalFormData) => {
+    const updatedGoal = await goalService.updateGoal(goalId, goalFormData);
+    setGoals(goals.map((g) => (g._id === goalId ? updatedGoal : g)));
+  };
 
   return (
     <>
@@ -43,7 +58,9 @@ const App = () => {
 
         <Route path='/goals' element={<GoalList goals={goals} />} /> 
         <Route path="/goals/:goalId" element={<GoalDetails handleDeleteGoal={handleDeleteGoal} />} />
-
+        <Route path="/goals/new" element={<GoalForm handleAddGoal={handleAddGoal} handleUpdateGoal={handleUpdateGoal} />} />
+        <Route path="/goals/:goalId/edit" element={<GoalForm handleAddGoal={handleAddGoal} handleUpdateGoal={handleUpdateGoal} />} />
+        
       </Routes>
     </>
   );

@@ -22,7 +22,7 @@ const GoalDetails = (props) => {
   
       if (goal.err) return <main>{goal.err}</main>;
     
-      const isOwner = goal.userId === user._id; // si userId NO está populated
+      const isOwner = goal.userId === user._id; 
     
       const handleDelete = async () => {
         await props.handleDeleteGoal(goalId);
