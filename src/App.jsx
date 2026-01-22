@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Routes, Route, useNavigate } from 'react-router';
 import { UserContext } from './contexts/UserContext';
 
@@ -20,6 +20,17 @@ import * as goalService from './services/goalService';
 const App = () => {
 
   const { user } = useContext(UserContext);
+  const [goals, setGoals] = useState([]);
+
+  useEffect(() => {
+    const fetchGoals = async () => {
+      if (!user) return;
+      const data = await goalService.index();
+      setGoals(data);
+    };
+    fetchGoals();
+  }, [user]);
+
 
   return (
     <>
@@ -28,6 +39,8 @@ const App = () => {
         <Route path='/' element={user ? <Dashboard /> : <Landing /> } />
         <Route path='/sign-up' element={<SignUpForm />} />
         <Route path="/sign-in" element={<SignInForm />} />
+
+        <Route path='/goals' element={<GoalList goals={goals} />} />
       </Routes>
     </>
   );
