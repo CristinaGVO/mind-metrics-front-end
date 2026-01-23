@@ -5,10 +5,12 @@ const GoalList = ({ goals = [] }) => {
     <main>
       <h1>Goals</h1>
 
-      <Link to="/goals/new">New Goal</Link>
+      <Link to="/goals/new">Add New Goal</Link>
+
+      <h2>Goal List</h2>
 
       {goals.length === 0 ? (
-        <p>No goals yet</p>
+        <p>You dont have goals yet</p>
       ) : (
         goals.map((goal) => (
           <article key={goal._id}>

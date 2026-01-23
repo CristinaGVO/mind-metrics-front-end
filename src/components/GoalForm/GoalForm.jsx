@@ -5,11 +5,11 @@ import * as goalService from "../../services/goalService";
 const initialState = {
   title: "",
   description: "",
-  targetMetric: "Water Cups",
+  targetMetric: "",
   targetValue: 0,
   startDate: "",
   endDate: "",
-  status: "Active",
+  status: "",
 };
 
 const GoalForm = (props) => {
@@ -41,8 +41,10 @@ const GoalForm = (props) => {
     evt.preventDefault();
 
     const payload = {
-      ...formData,
-      targetValue: Number(formData.targetValue),
+        ...formData,
+        status: formData.status || "Active",
+        targetMetric: formData.targetMetric || "Water Cups",
+        targetValue: Number(formData.targetValue),
     };
 
     if (goalId) {
@@ -124,19 +126,14 @@ const GoalForm = (props) => {
           value={formData.endDate}
           onChange={handleChange}
         />
-
         <label htmlFor="status-input">Status</label>
-        <select
-          required
-          name="status"
-          id="status-input"
-          value={formData.status}
-          onChange={handleChange}
-        >
-          <option value="Active">Active</option>
-          <option value="Paused">Paused</option>
-          <option value="Completed">Completed</option>
-        </select>
+        
+    <select name="status" value={formData.status} onChange={handleChange} required>
+        <option value="" disabled>Select status...</option>
+        <option value="Active">Active</option>
+        <option value="Paused">Paused</option>
+        <option value="Completed">Completed</option>
+    </select>
 
         <button type="submit">SUBMIT</button>
       </form>
