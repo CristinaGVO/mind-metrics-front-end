@@ -11,51 +11,50 @@ const GoalDetails = (props) => {
 
     useEffect(() => {
         const fetchGoal = async () => {
-          const goalData = await goalService.show(goalId);
-          setGoal(goalData);
+            const goalData = await goalService.show(goalId);
+            setGoal(goalData);
         };
         fetchGoal();
-      }, [goalId]);
-    
-      if (!goal) return <main>Loading...</main>;
-    
-  
-      if (goal.err) return <main>{goal.err}</main>;
-    
-      const isOwner = goal.userId === user._id; 
-    
-      const handleDelete = async () => {
+    }, [goalId]);
+
+    if (!goal) return <main>Loading...</main>;
+
+    if (goal.err) return <main>{goal.err}</main>;
+
+    const isOwner = goal.userId === user._id;
+
+    const handleDelete = async () => {
         await props.handleDeleteGoal(goalId);
         navigate("/goals");
-      };
-    
-      return (
-        <main>
-          <section>
-            <header>
-              <h1>{goal.title}</h1>
-              <p>{`Created on ${new Date(goal.createdAt).toLocaleDateString()}`}</p>
-    
-              {isOwner && (
-                <>
-                  <Link to={`/goals/${goalId}/edit`}>Edit</Link>
-                  <button onClick={handleDelete}>Delete</button>
-                </>
-              )}
-            </header>
-    
-            <p>{goal.description}</p>
-    
-            <p>{`Metric: ${goal.targetMetric}`}</p>
-            <p>{`Target: ${goal.targetValue}`}</p>
-            <p>{`Start: ${new Date(goal.startDate).toLocaleDateString()}`}</p>
-            <p>{`End: ${new Date(goal.endDate).toLocaleDateString()}`}</p>
-            <p>{`Status: ${goal.status}`}</p>
-    
-            <Link to="/goals">Back</Link>
-          </section>
-        </main>
-      );
     };
 
-  export default GoalDetails;
+    return (
+        <main>
+            <section>
+                <header>
+                    <h1>{goal.title}</h1>
+                    <p>{`Created on ${new Date(goal.createdAt).toLocaleDateString()}`}</p>
+
+                    {isOwner && (
+                        <>
+                            <Link to={`/goals/${goalId}/edit`}>Edit</Link>
+                            <button onClick={handleDelete}>Delete</button>
+                        </>
+                    )}
+                </header>
+
+                <p>{goal.description}</p>
+
+                <p>{`Metric: ${goal.targetMetric}`}</p>
+                <p>{`Target: ${goal.targetValue}`}</p>
+                <p>{`Start: ${new Date(goal.startDate).toLocaleDateString()}`}</p>
+                <p>{`End: ${new Date(goal.endDate).toLocaleDateString()}`}</p>
+                <p>{`Status: ${goal.status}`}</p>
+
+                <Link to="/goals">Back</Link>
+            </section>
+        </main>
+    );
+};
+
+export default GoalDetails;
