@@ -12,7 +12,7 @@ import Dashboard from './components/Dashboard/Dashboard';
 // import DailyLogForm from './components/DailyLogForm/DailyLogForm';
 import GoalList from './components/GoalList/GoalList';
 import GoalDetails from './components/GoalDetails/GoalDetails';
-// import GoalForm from './components/GoalForm/GoalForm';
+import GoalForm from './components/GoalForm/GoalForm';
 // import * as dailyLogService from './services/dailyLogService';
 import * as goalService from './services/goalService';
 

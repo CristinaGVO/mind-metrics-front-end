@@ -57,7 +57,5 @@ const GoalDetails = (props) => {
         </main>
       );
     };
-    
-
 
   export default GoalDetails;
