@@ -5,7 +5,6 @@ import * as goalService from '../../services/goalService';
 
 // Import chart components
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-// import { RechartsDevtools } from '@recharts/devtools';
 
 const Dashboard = () => {
     const { user } = useContext(UserContext);
@@ -145,6 +144,7 @@ const Dashboard = () => {
                 )}
             </section>
 
+            {/* Show goals */}
             <section>
                 <h2>Your Goals</h2>
                 {goals.length ? (
