@@ -28,6 +28,11 @@ const goalRules = {
 const Dashboard = () => {
     const { user } = useContext(UserContext);
     const [users, setUsers] = useState([]);
+    const [logs, setLogs] = useState([]);
+    const [goals, setGoals] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [period, setPeriod] = useState(7); // dafault period: last 7 days
+
 
     useEffect(() => {
         const fetchUsers = async () => {
