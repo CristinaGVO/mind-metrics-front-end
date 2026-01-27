@@ -98,9 +98,16 @@ const App = () => {
     try {
       setLogsError("");
 
+      // Convert the date string from form to UTC Date
+      const payload = { ...dailyLogFormData };
+      if (payload.date) {
+        const [year, month, day] = payload.date.split("-");
+        payload.date = new Date(year, month - 1, day);
+      }
+
       const updated = await dailyLogService.updateDailyLog(
         dailyLogId,
-        dailyLogFormData
+        payload
       );
 
       setDailyLogs((prev) =>

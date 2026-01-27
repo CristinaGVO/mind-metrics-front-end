@@ -64,6 +64,8 @@ const DailyLogForm = ({ handleAddDailyLog, handleUpdateDailyLog }) => {
   const [formData, setFormData] = useState(initialState);
 
   useEffect(() => {
+    if (!dailyLogId) return;
+
     const fetchDailyLog = async () => {
       const dailyLogData = await dailyLogService.show(dailyLogId);
 
