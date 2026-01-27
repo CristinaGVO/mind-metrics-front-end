@@ -2,7 +2,7 @@ import { useEffect, useContext, useState } from 'react'; // useEffect is useful 
 import { UserContext } from '../../contexts/UserContext';
 import * as dailyLogService from '../../services/dailyLogService';
 import * as goalService from '../../services/goalService';
-import DashboardView from './DashboardView';
+import DashboardView from '../DashboardView/DashboardView';
 
 const goalRules = {
     "Sleep Hours": { field: "sleepHours", comparison: "gte" },
