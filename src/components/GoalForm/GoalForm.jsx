@@ -96,7 +96,7 @@ const GoalForm = (props) => {
                     </option>
                     <option value="waterCups">Water Cups</option>
                     <option value="dietScore">Diet Score</option>
-                    <option value="screenMin">Screen Minutes</option>
+                    <option value="screenHours">Screen Hours</option>
                     <option value="workHours">Work Hours</option>
                     <option value="hobbyMin">Hobby Minutes</option>
                 </select>
