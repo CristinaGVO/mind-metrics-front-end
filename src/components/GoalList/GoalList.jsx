@@ -34,12 +34,12 @@ const GoalList = ({ goals = [] }) => {
         <p>No goals found for this status.</p>
       ) : (
         filteredGoals.map((goal) => (
-          <article key={goal._id}>
-            <h3>
-              <Link to={`/goals/${goal._id}`}>{goal.title}</Link>
-            </h3>
+          <Link key={goal._id} to={`/goals/${goal._id}`}>
+          <article>
+            <h2> {goal.title}</h2>
             <p>{goal.status}</p>
           </article>
+          </Link>
         ))
       )}
     </main>

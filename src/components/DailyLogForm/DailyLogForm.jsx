@@ -113,9 +113,9 @@ const DailyLogForm = ({ handleAddDailyLog, handleUpdateDailyLog }) => {
   const handleSubmit = (evt) => {
     evt.preventDefault();
 
-    // IMPORTANT: backend assigns userId from token; do not send userId from client
     const payload = {
       ...formData,
+       // Convert string input to number, or undefined if blank
       stressLevel: formData.stressLevel === "" ? undefined : Number(formData.stressLevel),
       focusLevel: formData.focusLevel === "" ? undefined : Number(formData.focusLevel),
       sleepHours: formData.sleepHours === "" ? undefined : Number(formData.sleepHours),

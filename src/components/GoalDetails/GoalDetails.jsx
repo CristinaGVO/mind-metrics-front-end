@@ -33,24 +33,24 @@ const GoalDetails = (props) => {
             <section>
                 <header>
                     <h1>{goal.title}</h1>
-                    <p>{`Created on ${new Date(goal.createdAt).toLocaleDateString()}`}</p>
+                    <p><strong>Created on {new Date(goal.createdAt).toLocaleDateString()}</strong></p>
 
-                    
+
                 </header>
 
                 <p>{goal.description}</p>
 
-                <p>{`Metric: ${goal.targetMetric}`}</p>
-                <p>{`Target: ${goal.targetValue}`}</p>
-                <p>{`Start: ${new Date(goal.startDate).toLocaleDateString()}`}</p>
-                <p>{`End: ${new Date(goal.endDate).toLocaleDateString()}`}</p>
-                <p>{`Status: ${goal.status}`}</p>
+                <p><strong>Metric:</strong> {goal.targetMetric}</p>
+                <p><strong>Target:</strong> {goal.targetValue}</p>
+                <p><strong>Start:</strong> {new Date(goal.startDate).toLocaleDateString()}</p>
+                <p><strong>End:</strong> {new Date(goal.endDate).toLocaleDateString()}</p>
+                <p><strong>Status:</strong> {goal.status}</p>
                 {isOwner && (
-                        <>
-                            <Link to={`/goals/${goalId}/edit`}>EDIT</Link>
-                            <button onClick={handleDelete}>DELETE</button>
-                        </>
-                    )}
+                    <>
+                        <Link to={`/goals/${goalId}/edit`}>EDIT</Link>
+                        <button onClick={handleDelete}>DELETE</button>
+                    </>
+                )}
 
             </section>
         </main>

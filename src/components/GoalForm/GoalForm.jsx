@@ -6,7 +6,7 @@ const initialState = {
     title: "",
     description: "",
     targetMetric: "",
-    targetValue: 0,
+    targetValue: "",
     startDate: "",
     endDate: "",
     status: "",
@@ -46,7 +46,8 @@ const GoalForm = (props) => {
             ...formData,
             status: formData.status || "Active",
             targetMetric: formData.targetMetric || "Water Cups",
-            targetValue: Number(formData.targetValue),
+            // targetValue: Number(formData.targetValue),
+            targetValue: formData.targetValue === "" ? undefined : Number(formData.targetValue),
             startDate: formData.startDate,
             endDate: formData.endDate,
         };
@@ -108,7 +109,7 @@ const GoalForm = (props) => {
                     type="number"
                     name="targetValue"
                     id="targetValue-input"
-                    value={formData.targetValue === 0 ? "" : formData.targetValue}
+                    value={formData.targetValue}
                     onChange={handleChange}
                 />
 

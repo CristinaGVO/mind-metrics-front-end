@@ -26,14 +26,11 @@ const DailyLogDetails = ({ handleDeleteDailyLog }) => {
     <main>
       <section>
         <header>
-          <h1>Daily Log</h1>
+          <h1>{dailyLog.mood}</h1>
           <p>
             <strong>Tracking Date:</strong> {new Date(dailyLog.date).toLocaleDateString()}
           </p>
         </header>
-        <p>
-          <strong>Mood:</strong> {dailyLog.mood}
-        </p>
         <p>
           <strong>Stress Level:</strong> {dailyLog.stressLevel}
         </p>
