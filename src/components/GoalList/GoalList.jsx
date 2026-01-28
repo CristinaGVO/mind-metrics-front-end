@@ -3,7 +3,7 @@ import { useState } from "react";
 
 const GoalList = ({ goals = [] }) => {
 
-    const [statusFilter, setStatusFilter] = useState("ALL");
+  const [statusFilter, setStatusFilter] = useState("ALL");
 
   const filteredGoals =
     statusFilter === "ALL"
@@ -15,10 +15,9 @@ const GoalList = ({ goals = [] }) => {
       <h1>Goals</h1>
 
       <Link to="/goals/new">New Goal</Link>
-
-      <h2>Goal List</h2>
-
+ 
       {/* Filter */}
+      <div>
       <label htmlFor="status-filter">Filter by Status:</label>
       <select
         id="status-filter"
@@ -30,18 +29,19 @@ const GoalList = ({ goals = [] }) => {
         <option value="Paused">Paused</option>
         <option value="Completed">Completed</option>
       </select>
+      </div>
 
       {/* List */}
       {filteredGoals.length === 0 ? (
         <p>No goals found for this status.</p>
       ) : (
         filteredGoals.map((goal) => (
-          <article key={goal._id}>
-            <h3>
-              <Link to={`/goals/${goal._id}`}>{goal.title}</Link>
-            </h3>
+          <Link key={goal._id} to={`/goals/${goal._id}`}>
+          <article>
+            <h2> {goal.title}</h2>
             <p>{goal.status}</p>
           </article>
+          </Link>
         ))
       )}
     </main>

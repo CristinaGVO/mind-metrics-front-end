@@ -6,7 +6,7 @@ const initialState = {
     title: "",
     description: "",
     targetMetric: "",
-    targetValue: 0,
+    targetValue: "",
     startDate: "",
     endDate: "",
     status: "",
@@ -46,7 +46,10 @@ const GoalForm = (props) => {
             ...formData,
             status: formData.status || "Active",
             targetMetric: formData.targetMetric || "Water Cups",
-            targetValue: Number(formData.targetValue),
+            // targetValue: Number(formData.targetValue),
+            targetValue: formData.targetValue === "" ? undefined : Number(formData.targetValue),
+            startDate: formData.startDate,
+            endDate: formData.endDate,
         };
 
         if (goalId) {
@@ -89,6 +92,7 @@ const GoalForm = (props) => {
                     value={formData.targetMetric}
                     onChange={handleChange}
                 >
+                    <option value="" disabled>Select option</option>
                     <option value="Sleep Hours">Sleep Hours</option>
                     <option value="Exercise Minutes">Exercise Minutes</option>
                     <option value="Meditation Minutes">Meditation Minutes</option>
@@ -137,7 +141,7 @@ const GoalForm = (props) => {
                     required
                 >
                     <option value="" disabled>
-                        Select status...
+                        Select option
                     </option>
                     <option value="Active">Active</option>
                     <option value="Paused">Paused</option>

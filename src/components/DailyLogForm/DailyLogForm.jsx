@@ -3,7 +3,7 @@ import { useParams } from "react-router";
 
 import * as dailyLogService from "../../services/dailyLogService";
 
-// Converts backend Date to local YYYY-MM-DD for input type="date"
+// Helper function to convert backend Date to local YYYY-MM-DD for input type="date"
 const toLocalDateInput = (date) => {
   const dt = new Date(date);
   const year = dt.getFullYear();
@@ -41,17 +41,17 @@ const dietScoreOptions = [1, 2, 3, 4, 5];
 
 const initialState = {
   date: "",
-  mood: "Happy",
-  stressLevel: 1,
-  focusLevel: 1,
-  sleepHours: 0,
-  exerciseMin: 0,
-  meditationMin: 0,
-  waterCups: 0,
-  dietScore: 1,
-  screenHours: 0,
-  workHours: 0,
-  hobbyMin: 0,
+  mood: "",
+  stressLevel: "",
+  focusLevel: "",
+  sleepHours: "",
+  exerciseMin: "",
+  meditationMin: "",
+  waterCups: "",
+  dietScore: "",
+  screenHours: "",
+  workHours: "",
+  hobbyMin: "",
   location: "",
   weather: "",
   notes: "",
@@ -113,8 +113,20 @@ const DailyLogForm = ({ handleAddDailyLog, handleUpdateDailyLog }) => {
   const handleSubmit = (evt) => {
     evt.preventDefault();
 
-    // IMPORTANT: backend assigns userId from token; do not send userId from client
-    const payload = { ...formData };
+    const payload = {
+      ...formData,
+       // Convert string input to number, or undefined if blank
+      stressLevel: formData.stressLevel === "" ? undefined : Number(formData.stressLevel),
+      focusLevel: formData.focusLevel === "" ? undefined : Number(formData.focusLevel),
+      sleepHours: formData.sleepHours === "" ? undefined : Number(formData.sleepHours),
+      exerciseMin: formData.exerciseMin === "" ? undefined : Number(formData.exerciseMin),
+      meditationMin: formData.meditationMin === "" ? undefined : Number(formData.meditationMin),
+      waterCups: formData.waterCups === "" ? undefined : Number(formData.waterCups),
+      dietScore: formData.dietScore === "" ? undefined : Number(formData.dietScore),
+      screenHours: formData.screenHours === "" ? undefined : Number(formData.screenHours),
+      workHours: formData.workHours === "" ? undefined : Number(formData.workHours),
+      hobbyMin: formData.hobbyMin === "" ? undefined : Number(formData.hobbyMin),
+    };
     delete payload.userId;
 
     if (dailyLogId) {
@@ -147,6 +159,9 @@ const DailyLogForm = ({ handleAddDailyLog, handleUpdateDailyLog }) => {
           value={formData.mood}
           onChange={handleChange}
         >
+          <option value="" disabled>
+            Select option
+          </option>
           {MOODS.map((m) => (
             <option key={m} value={m}>
               {m}
@@ -162,6 +177,9 @@ const DailyLogForm = ({ handleAddDailyLog, handleUpdateDailyLog }) => {
           value={formData.stressLevel}
           onChange={handleChange}
         >
+          <option value="" disabled>
+            Select option
+          </option>
           {stressFocusOptions.map((n) => (
             <option key={n} value={n}>
               {n}
@@ -177,6 +195,9 @@ const DailyLogForm = ({ handleAddDailyLog, handleUpdateDailyLog }) => {
           value={formData.focusLevel}
           onChange={handleChange}
         >
+          <option value="" disabled>
+            Select option
+          </option>
           {stressFocusOptions.map((n) => (
             <option key={n} value={n}>
               {n}
@@ -192,6 +213,9 @@ const DailyLogForm = ({ handleAddDailyLog, handleUpdateDailyLog }) => {
           value={formData.sleepHours}
           onChange={handleChange}
         >
+          <option value="" disabled>
+            Select option
+          </option>
           {sleepHoursOptions.map((n) => (
             <option key={n} value={n}>
               {n}
@@ -229,6 +253,9 @@ const DailyLogForm = ({ handleAddDailyLog, handleUpdateDailyLog }) => {
           value={formData.waterCups}
           onChange={handleChange}
         >
+          <option value="" disabled>
+            Select option
+          </option>
           {waterCupsOptions.map((n) => (
             <option key={n} value={n}>
               {n}
@@ -244,6 +271,9 @@ const DailyLogForm = ({ handleAddDailyLog, handleUpdateDailyLog }) => {
           value={formData.dietScore}
           onChange={handleChange}
         >
+          <option value="" disabled>
+            Select option
+          </option>
           {dietScoreOptions.map((n) => (
             <option key={n} value={n}>
               {n}
@@ -259,6 +289,9 @@ const DailyLogForm = ({ handleAddDailyLog, handleUpdateDailyLog }) => {
           value={formData.screenHours}
           onChange={handleChange}
         >
+          <option value="" disabled>
+            Select option
+          </option>
           {screenWorkOptions.map((n) => (
             <option key={n} value={n}>
               {n}
@@ -274,6 +307,9 @@ const DailyLogForm = ({ handleAddDailyLog, handleUpdateDailyLog }) => {
           value={formData.workHours}
           onChange={handleChange}
         >
+          <option value="" disabled>
+            Select option
+          </option>
           {screenWorkOptions.map((n) => (
             <option key={n} value={n}>
               {n}
