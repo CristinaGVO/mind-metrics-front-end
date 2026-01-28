@@ -29,13 +29,27 @@ const DailyLogList = ({ dailyLogs }) => {
   const sortedLogs = [...dailyLogs].sort(
     (a, b) => new Date(b.date) - new Date(a.date)
   );
-  
+
   return (
     <main>
       <h1>Daily Logs</h1>
 
-      {/* Only show button if there is no log for today */}
-      {!hasTodaysLog && <Link to="/dailylogs/new">Add New Daily Log</Link>}
+      {user && (
+        <>
+          {!hasTodaysLog ? (
+            // No log for today → allow adding today’s log
+            <Link to="/dailylogs/new">Add Daily Log</Link>
+          ) : (
+            // Already has log for today → allow adding for previous days
+            <div>
+              <p>
+                You already have a log for today! If you missed logging any previous days, you can do it here:
+              </p>
+              <Link to="/dailylogs/new?date=past">Add Daily Log</Link>
+            </div>
+          )}
+        </>
+      )}
 
       {sortedLogs.map((dailyLog) => (
         <Link key={dailyLog._id} to={`/dailylogs/${dailyLog._id}`}>
