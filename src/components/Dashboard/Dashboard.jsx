@@ -46,6 +46,26 @@ const recommendationRules = [
         condition: value => value > 4,
         message: "Screen time is high. Take breaks from your devices to rest your eyes."
     },
+    {
+        field: "workHours",
+        condition: value => value > 9,
+        message: "You've been overworking. Try to keep a better worklife balance."
+    },
+    {
+        field: "dietScore",
+        condition: value => value < 3,
+        message: "Your diet hasn’t been great. Try to opt for more healthy and fresh meals and snacks."
+    },
+    {
+        field: "hobbyMin",
+        condition: value => value < 15,
+        message: "You haven’t spent much time on hobbies. Try to make more time for yourself!"
+    },
+    {
+        field: "meditationMin",
+        condition: value => value < 10,
+        message: "You haven’t meditated much. Try spending at least 10 minutes on mindfulness or meditation."
+    }
 ];
 
 const Dashboard = () => {
@@ -53,7 +73,7 @@ const Dashboard = () => {
     const [logs, setLogs] = useState([]);
     const [goals, setGoals] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [period, setPeriod] = useState(7); // dafault period: last 7 days
+    const [period, setPeriod] = useState(3); // dafault period: last 3 days
 
     useEffect(() => {
         const fetchData = async () => {
@@ -129,7 +149,7 @@ const Dashboard = () => {
         let value;
         if (rule.field === "stressLevel") value = stressAvg;
         else if (rule.field === "focusLevel") value = focusAvg;
-        else value = goalAvgs[rule.field]; // sleep, exercise, water, screen
+        else value = goalAvgs[rule.field]; // daily habits
 
         if (value !== null && value !== undefined && rule.condition(value)) {
             recommendations.push(rule.message);

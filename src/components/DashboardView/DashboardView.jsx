@@ -82,9 +82,9 @@ const DashboardView = ({
                             {goal.met === null ? (
                                 <span> Not enough data</span>
                             ) : goal.met ? (
-                                <span> Met</span>
+                                <span> Met ✅</span>
                             ) : (
-                                <span> Not met</span>
+                                <span> Not met ❌</span>
                             )}
 
                             {goal.value !== null && (

@@ -9,6 +9,34 @@ const DailyLogList = ({ dailyLogs }) => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
+  // Helper: convert date to YYYY-MM-DD string
+  const toYMD = (date) => {
+    const dt = new Date(date);
+    const year = dt.getFullYear();
+    const month = String(dt.getMonth() + 1).padStart(2, "0");
+    const day = String(dt.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+
+  // Only show logs belonging to the current user
+  const userLogs = dailyLogs?.filter(
+    (log) => String(log.userId?._id || log.userId) === String(user?._id)
+  );
+
+  // Sort logs by date (most recent first)
+  const sortedLogs = [...(userLogs || [])].sort(
+    (a, b) => new Date(b.date) - new Date(a.date)
+  );
+
+  // Filter logs by start/end date (only if both are set)
+  const filteredLogs =
+    startDate && endDate
+      ? sortedLogs.filter((log) => {
+        const logYMD = toYMD(log.date);
+        return logYMD >= startDate && logYMD <= endDate;
+      })
+      : sortedLogs;
+
   // Check if the current user has a log for today
   const today = new Date();
   const isSameDay = (d1, d2) => {
@@ -22,34 +50,7 @@ const DailyLogList = ({ dailyLogs }) => {
   };
 
   // Helper function that return true as soon as one log matches
-  const hasTodaysLog = dailyLogs?.some(
-    (log) =>
-      String(log.userId?._id || log.userId) === String(user?._id) &&
-      isSameDay(log.date, today)
-  );
-
-  // Sort logs by date (most recent first)
-  const sortedLogs = [...dailyLogs].sort(
-    (a, b) => new Date(b.date) - new Date(a.date)
-  );
-
-  // Helper: convert date to YYYY-MM-DD string
-  const toYMD = (date) => {
-    const d = new Date(date);
-    const year = d.getFullYear();
-    const month = String(d.getMonth() + 1).padStart(2, "0");
-    const day = String(d.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-  };
-
-  // Filter logs by start/end date (only if both are set)
-  const filteredLogs =
-    startDate && endDate
-      ? sortedLogs.filter((log) => {
-        const logYMD = toYMD(log.date);
-        return logYMD >= startDate && logYMD <= endDate;
-      })
-      : sortedLogs;
+  const hasTodaysLog = userLogs?.some((log) => isSameDay(log.date, today));
 
   return (
     <main>
