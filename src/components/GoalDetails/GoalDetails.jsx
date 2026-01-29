@@ -82,10 +82,20 @@ const GoalDetails = (props) => {
 
                 {isOwner && (
                     <div className={styles.actions}>
-                    <Link className={styles.action} to={`/goals/${goalId}/edit`}>Edit</Link>
-                    <Link className={styles.action} type="button" onClick={handleDelete}>Delete</Link>
-                  </div>
-                  
+                        <Link
+                            className={styles.action}
+                            to={`/goals/${goalId}/edit`}
+                        >
+                            Edit
+                        </Link>
+                        <Link
+                            className={styles.action}
+                            type="button"
+                            onClick={handleDelete}
+                        >
+                            Delete
+                        </Link>
+                    </div>
                 )}
             </section>
         </main>
