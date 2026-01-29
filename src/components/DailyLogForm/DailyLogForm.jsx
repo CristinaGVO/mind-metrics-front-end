@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router";
 
 import * as dailyLogService from "../../services/dailyLogService";
+import styles from "./DailyLogForm.module.css";
 
 // Helper function to convert backend Date to local YYYY-MM-DD for input type="date"
 const toLocalDateInput = (date) => {
@@ -55,7 +56,7 @@ const initialState = {
   location: "",
   weather: "",
   notes: "",
-}
+};
 
 const DailyLogForm = ({ handleAddDailyLog, handleUpdateDailyLog }) => {
   const { dailyLogId } = useParams();
@@ -70,7 +71,9 @@ const DailyLogForm = ({ handleAddDailyLog, handleUpdateDailyLog }) => {
       const dailyLogData = await dailyLogService.show(dailyLogId);
 
       // Convert Date to YYYY-MM-DD for date input
-      const dateStr = dailyLogData?.date ? toLocalDateInput(dailyLogData.date) : "";
+      const dateStr = dailyLogData?.date
+        ? toLocalDateInput(dailyLogData.date)
+        : "";
 
       setFormData({
         ...dailyLogData,
@@ -79,54 +82,25 @@ const DailyLogForm = ({ handleAddDailyLog, handleUpdateDailyLog }) => {
     };
 
     if (dailyLogId) fetchDailyLog();
-
-    return () =>
-      setFormData(initialState);
   }, [dailyLogId]);
 
+  // ✅ Needed because your JSX uses onChange={handleChange}
+  // (This matches your original functionality: update form state from inputs)
   const handleChange = (evt) => {
     const { name, value } = evt.target;
 
-    // Convert numeric selects to Numbers so Mongoose enum validation passes
-    const numericFields = new Set([
-      "stressLevel",
-      "focusLevel",
-      "sleepHours",
-      "exerciseMin",
-      "meditationMin",
-      "waterCups",
-      "dietScore",
-      "screenHours",
-      "workHours",
-      "hobbyMin",
-    ]);
-
-    setFormData({
-      ...formData,
-      [name]: numericFields.has(name)
-        ? (value === "" ? "" : Number(value)) // allow empty string temporarily
-        : value,
-    });
-
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
 
-    const payload = {
-      ...formData,
-       // Convert string input to number, or undefined if blank
-      stressLevel: formData.stressLevel === "" ? undefined : Number(formData.stressLevel),
-      focusLevel: formData.focusLevel === "" ? undefined : Number(formData.focusLevel),
-      sleepHours: formData.sleepHours === "" ? undefined : Number(formData.sleepHours),
-      exerciseMin: formData.exerciseMin === "" ? undefined : Number(formData.exerciseMin),
-      meditationMin: formData.meditationMin === "" ? undefined : Number(formData.meditationMin),
-      waterCups: formData.waterCups === "" ? undefined : Number(formData.waterCups),
-      dietScore: formData.dietScore === "" ? undefined : Number(formData.dietScore),
-      screenHours: formData.screenHours === "" ? undefined : Number(formData.screenHours),
-      workHours: formData.workHours === "" ? undefined : Number(formData.workHours),
-      hobbyMin: formData.hobbyMin === "" ? undefined : Number(formData.hobbyMin),
-    };
+    const payload = { ...formData };
+
+    // don’t send userId back
     delete payload.userId;
 
     if (dailyLogId) {
@@ -137,233 +111,317 @@ const DailyLogForm = ({ handleAddDailyLog, handleUpdateDailyLog }) => {
   };
 
   return (
-    <main>
-      <h1>{dailyLogId ? "Edit Daily Log" : "New Daily Log"}</h1>
+    <main className={styles.page}>
+      <h1 className={styles.title}>
+        {dailyLogId ? "Edit Daily Log" : "New Daily Log"}
+      </h1>
 
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="date-input">Date</label>
-        <input
-          required
-          type="date"
-          name="date"
-          id="date-input"
-          value={formData.date}
-          onChange={handleChange}
-        />
+      <form className={styles.form} onSubmit={handleSubmit}>
+        <section className={styles.grid}>
+          <div className={styles.row}>
+            <label className={styles.label} htmlFor="date-input">
+              Date
+            </label>
+            <input
+              className={styles.control}
+              required
+              type="date"
+              name="date"
+              id="date-input"
+              value={formData.date}
+              onChange={handleChange}
+            />
+          </div>
 
-        <label htmlFor="mood-input">Mood</label>
-        <select
-          required
-          name="mood"
-          id="mood-input"
-          value={formData.mood}
-          onChange={handleChange}
-        >
-          <option value="" disabled>
-            Select option
-          </option>
-          {MOODS.map((m) => (
-            <option key={m} value={m}>
-              {m}
-            </option>
-          ))}
-        </select>
+          <div className={styles.row}>
+            <label className={styles.label} htmlFor="mood-input">
+              Mood
+            </label>
+            <select
+              className={styles.control}
+              required
+              name="mood"
+              id="mood-input"
+              value={formData.mood}
+              onChange={handleChange}
+            >
+              <option value="" disabled>
+                Select option
+              </option>
+              {MOODS.map((m) => (
+                <option key={m} value={m}>
+                  {m}
+                </option>
+              ))}
+            </select>
+          </div>
 
-        <label htmlFor="stressLevel-input">Stress Level</label>
-        <select
-          required
-          name="stressLevel"
-          id="stressLevel-input"
-          value={formData.stressLevel}
-          onChange={handleChange}
-        >
-          <option value="" disabled>
-            Select option
-          </option>
-          {stressFocusOptions.map((n) => (
-            <option key={n} value={n}>
-              {n}
-            </option>
-          ))}
-        </select>
+          <div className={styles.row}>
+            <label className={styles.label} htmlFor="stressLevel-input">
+              Stress Level
+            </label>
+            <select
+              className={styles.control}
+              required
+              name="stressLevel"
+              id="stressLevel-input"
+              value={formData.stressLevel}
+              onChange={handleChange}
+            >
+              <option value="" disabled>
+                Select option
+              </option>
+              {stressFocusOptions.map((n) => (
+                <option key={n} value={n}>
+                  {n}
+                </option>
+              ))}
+            </select>
+          </div>
 
-        <label htmlFor="focusLevel-input">Focus Level</label>
-        <select
-          required
-          name="focusLevel"
-          id="focusLevel-input"
-          value={formData.focusLevel}
-          onChange={handleChange}
-        >
-          <option value="" disabled>
-            Select option
-          </option>
-          {stressFocusOptions.map((n) => (
-            <option key={n} value={n}>
-              {n}
-            </option>
-          ))}
-        </select>
+          <div className={styles.row}>
+            <label className={styles.label} htmlFor="focusLevel-input">
+              Focus Level
+            </label>
+            <select
+              className={styles.control}
+              required
+              name="focusLevel"
+              id="focusLevel-input"
+              value={formData.focusLevel}
+              onChange={handleChange}
+            >
+              <option value="" disabled>
+                Select option
+              </option>
+              {stressFocusOptions.map((n) => (
+                <option key={n} value={n}>
+                  {n}
+                </option>
+              ))}
+            </select>
+          </div>
 
-        <label htmlFor="sleepHours-input">Sleep Hours</label>
-        <select
-          required
-          name="sleepHours"
-          id="sleepHours-input"
-          value={formData.sleepHours}
-          onChange={handleChange}
-        >
-          <option value="" disabled>
-            Select option
-          </option>
-          {sleepHoursOptions.map((n) => (
-            <option key={n} value={n}>
-              {n}
-            </option>
-          ))}
-        </select>
+          <div className={styles.row}>
+            <label className={styles.label} htmlFor="sleepHours-input">
+              Sleep Hours
+            </label>
+            <select
+              className={styles.control}
+              required
+              name="sleepHours"
+              id="sleepHours-input"
+              value={formData.sleepHours}
+              onChange={handleChange}
+            >
+              <option value="" disabled>
+                Select option
+              </option>
+              {sleepHoursOptions.map((n) => (
+                <option key={n} value={n}>
+                  {n}
+                </option>
+              ))}
+            </select>
+          </div>
 
-        <label htmlFor="exerciseMin-input">Exercise Minutes</label>
-        <input
-          required
-          type="number"
-          name="exerciseMin"
-          id="exerciseMin-input"
-          value={formData.exerciseMin}
-          min={0}
-          onChange={handleChange}
-        />
+          <div className={styles.row}>
+            <label className={styles.label} htmlFor="exerciseMin-input">
+              Exercise Minutes
+            </label>
+            <input
+              className={styles.control}
+              required
+              type="number"
+              name="exerciseMin"
+              id="exerciseMin-input"
+              value={formData.exerciseMin}
+              min={0}
+              onChange={handleChange}
+            />
+          </div>
 
-        <label htmlFor="meditationMin-input">Meditation Minutes</label>
-        <input
-          required
-          type="number"
-          name="meditationMin"
-          id="meditationMin-input"
-          value={formData.meditationMin}
-          min={0}
-          onChange={handleChange}
-        />
+          <div className={styles.row}>
+            <label className={styles.label} htmlFor="meditationMin-input">
+              Meditation Minutes
+            </label>
+            <input
+              className={styles.control}
+              required
+              type="number"
+              name="meditationMin"
+              id="meditationMin-input"
+              value={formData.meditationMin}
+              min={0}
+              onChange={handleChange}
+            />
+          </div>
 
-        <label htmlFor="waterCups-input">Water Cups</label>
-        <select
-          required
-          name="waterCups"
-          id="waterCups-input"
-          value={formData.waterCups}
-          onChange={handleChange}
-        >
-          <option value="" disabled>
-            Select option
-          </option>
-          {waterCupsOptions.map((n) => (
-            <option key={n} value={n}>
-              {n}
-            </option>
-          ))}
-        </select>
+          <div className={styles.row}>
+            <label className={styles.label} htmlFor="waterCups-input">
+              Water Cups
+            </label>
+            <select
+              className={styles.control}
+              required
+              name="waterCups"
+              id="waterCups-input"
+              value={formData.waterCups}
+              onChange={handleChange}
+            >
+              <option value="" disabled>
+                Select option
+              </option>
+              {waterCupsOptions.map((n) => (
+                <option key={n} value={n}>
+                  {n}
+                </option>
+              ))}
+            </select>
+          </div>
 
-        <label htmlFor="dietScore-input">Diet Score</label>
-        <select
-          required
-          name="dietScore"
-          id="dietScore-input"
-          value={formData.dietScore}
-          onChange={handleChange}
-        >
-          <option value="" disabled>
-            Select option
-          </option>
-          {dietScoreOptions.map((n) => (
-            <option key={n} value={n}>
-              {n}
-            </option>
-          ))}
-        </select>
+          <div className={styles.row}>
+            <label className={styles.label} htmlFor="dietScore-input">
+              Diet Score
+            </label>
+            <select
+              className={styles.control}
+              required
+              name="dietScore"
+              id="dietScore-input"
+              value={formData.dietScore}
+              onChange={handleChange}
+            >
+              <option value="" disabled>
+                Select option
+              </option>
+              {dietScoreOptions.map((n) => (
+                <option key={n} value={n}>
+                  {n}
+                </option>
+              ))}
+            </select>
+          </div>
 
-        <label htmlFor="screenHours-input">Screen Hours</label>
-        <select
-          required
-          name="screenHours"
-          id="screenHours-input"
-          value={formData.screenHours}
-          onChange={handleChange}
-        >
-          <option value="" disabled>
-            Select option
-          </option>
-          {screenWorkOptions.map((n) => (
-            <option key={n} value={n}>
-              {n}
-            </option>
-          ))}
-        </select>
+          <div className={styles.row}>
+            <label className={styles.label} htmlFor="screenHours-input">
+              Screen Hours
+            </label>
+            <select
+              className={styles.control}
+              required
+              name="screenHours"
+              id="screenHours-input"
+              value={formData.screenHours}
+              onChange={handleChange}
+            >
+              <option value="" disabled>
+                Select option
+              </option>
+              {screenWorkOptions.map((n) => (
+                <option key={n} value={n}>
+                  {n}
+                </option>
+              ))}
+            </select>
+          </div>
 
-        <label htmlFor="workHours-input">Work Hours</label>
-        <select
-          required
-          name="workHours"
-          id="workHours-input"
-          value={formData.workHours}
-          onChange={handleChange}
-        >
-          <option value="" disabled>
-            Select option
-          </option>
-          {screenWorkOptions.map((n) => (
-            <option key={n} value={n}>
-              {n}
-            </option>
-          ))}
-        </select>
+          <div className={styles.row}>
+            <label className={styles.label} htmlFor="workHours-input">
+              Work Hours
+            </label>
+            <select
+              className={styles.control}
+              required
+              name="workHours"
+              id="workHours-input"
+              value={formData.workHours}
+              onChange={handleChange}
+            >
+              <option value="" disabled>
+                Select option
+              </option>
+              {screenWorkOptions.map((n) => (
+                <option key={n} value={n}>
+                  {n}
+                </option>
+              ))}
+            </select>
+          </div>
 
-        <label htmlFor="hobbyMin-input">Hobby Minutes</label>
-        <input
-          required
-          type="number"
-          name="hobbyMin"
-          id="hobbyMin-input"
-          value={formData.hobbyMin}
-          min={0}
-          onChange={handleChange}
-        />
+          <div className={styles.row}>
+            <label className={styles.label} htmlFor="hobbyMin-input">
+              Hobby Minutes
+            </label>
+            <input
+              className={styles.control}
+              required
+              type="number"
+              name="hobbyMin"
+              id="hobbyMin-input"
+              value={formData.hobbyMin}
+              min={0}
+              onChange={handleChange}
+            />
+          </div>
 
-        <label htmlFor="location-input">Location</label>
-        <input
-          required
-          type="text"
-          name="location"
-          id="location-input"
-          value={formData.location}
-          onChange={handleChange}
-        />
+          <div className={styles.row}>
+            <label className={styles.label} htmlFor="location-input">
+              Location
+            </label>
+            <input
+              className={styles.control}
+              required
+              type="text"
+              name="location"
+              id="location-input"
+              value={formData.location}
+              onChange={handleChange}
+            />
+          </div>
 
-        <label htmlFor="weather-input">Weather</label>
-        <input
-          required
-          type="text"
-          name="weather"
-          id="weather-input"
-          value={formData.weather}
-          onChange={handleChange}
-        />
+          <div className={styles.row}>
+            <label className={styles.label} htmlFor="weather-input">
+              Weather
+            </label>
+            <input
+              className={styles.control}
+              required
+              type="text"
+              name="weather"
+              id="weather-input"
+              value={formData.weather}
+              onChange={handleChange}
+            />
+          </div>
 
-        <label htmlFor="notes-input">Notes</label>
-        <textarea
-          required
-          name="notes"
-          id="notes-input"
-          value={formData.notes}
-          onChange={handleChange}
-        />
+          <div className={`${styles.row} ${styles.textareaRow}`}>
+            <label className={styles.label} htmlFor="notes-input">
+              Notes
+            </label>
+            <textarea
+              className={`${styles.control} ${styles.textarea}`}
+              required
+              name="notes"
+              id="notes-input"
+              value={formData.notes}
+              onChange={handleChange}
+            />
+          </div>
+        </section>
 
-        <button type="submit">SUBMIT</button>
+        <div className={styles.actions}>
+          <button className={styles.buttonPrimary} type="submit">
+            SUBMIT
+          </button>
+        </div>
       </form>
     </main>
   );
 };
 
 export default DailyLogForm;
+
 
 
 
