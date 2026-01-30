@@ -44,7 +44,7 @@ const GoalForm = (props) => {
 
         const payload = {
             ...formData,
-            targetValue: Number(formData.targetValue),
+            targetValue: formData.targetValue === "" ? undefined : Number(formData.targetValue),
         };
 
         if (goalId) {

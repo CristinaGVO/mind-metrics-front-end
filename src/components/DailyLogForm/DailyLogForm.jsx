@@ -13,7 +13,7 @@ const toLocalDateInput = (date) => {
   return `${year}-${month}-${day}`;
 };
 
-const MOODS = [
+const moods = [
   "Happy",
   "Calm",
   "Confident",
@@ -28,7 +28,7 @@ const MOODS = [
   "Depressed",
 ];
 
-const US_STATES = [
+const usStates = [
   { abbr: "AL", name: "Alabama" },
   { abbr: "AK", name: "Alaska" },
   { abbr: "AZ", name: "Arizona" },
@@ -81,6 +81,19 @@ const US_STATES = [
   { abbr: "WY", name: "Wyoming" },
 ];
 
+const numericFields = [
+  "stressLevel",
+  "focusLevel",
+  "sleepHours",
+  "exerciseMin",
+  "meditationMin",
+  "waterCups",
+  "dietScore",
+  "screenHours",
+  "workHours",
+  "hobbyMin",
+];
+
 const makeRange = (start, end, step = 1) => {
   const nums = [];
   for (let i = start; i <= end; i += step) nums.push(i);
@@ -124,9 +137,7 @@ const DailyLogForm = ({ handleAddDailyLog, handleUpdateDailyLog }) => {
       const dailyLogData = await dailyLogService.show(dailyLogId);
 
       // Convert Date to YYYY-MM-DD for date input
-      const dateStr = dailyLogData?.date
-        ? toLocalDateInput(dailyLogData.date)
-        : "";
+      const dateStr = dailyLogData?.date ? toLocalDateInput(dailyLogData.date) : "";
 
       setFormData({
         ...dailyLogData,
@@ -150,8 +161,11 @@ const DailyLogForm = ({ handleAddDailyLog, handleUpdateDailyLog }) => {
     evt.preventDefault();
 
     const payload = { ...formData };
+    numericFields.forEach((field) => {
+      if (payload[field] !== "") payload[field] = Number(payload[field]);
+    });
 
-    // don’t send userId back
+    // Don’t send userId back
     delete payload.userId;
 
     if (dailyLogId) {
@@ -199,7 +213,7 @@ const DailyLogForm = ({ handleAddDailyLog, handleUpdateDailyLog }) => {
               <option value="" disabled>
                 Select option
               </option>
-              {MOODS.map((m) => (
+              {moods.map((m) => (
                 <option key={m} value={m}>
                   {m}
                 </option>
@@ -447,7 +461,7 @@ const DailyLogForm = ({ handleAddDailyLog, handleUpdateDailyLog }) => {
                 Select an option
               </option>
 
-              {US_STATES.map(({ abbr, name }) => (
+              {usStates.map(({ abbr, name }) => (
                 <option key={abbr} value={abbr}>
                   {name} - {abbr}
                 </option>
