@@ -12,7 +12,7 @@ By combining habit tracking, goal-setting, and personalized insights, MindMetric
 
 1. **Click the links below**:
 * Planning Materials: [Trello](https://trello.com/b/xCiDB2r8/project-3-mindmetrics)
-* Backend Repository: [mind-metrics-back-end](https://github.com/thaispbrito/mind-metrics-back-end)
+* Back-end Repository: [mind-metrics-back-end](https://github.com/thaispbrito/mind-metrics-back-end)
 * Deployed Website: [MindMetrics](https://react-mind-metrics.netlify.app/)
 
 2. **Sign Up or Sign In**: Create an account or log in to start using MindMetrics!
